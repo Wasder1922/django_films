@@ -1,0 +1,23 @@
+{% extends 'films/base.html' %}
+
+{% block content %}
+    <h1>Все книги</h1>
+    <form method="get">
+        <div class="input-group mb-3">
+            <input type="text" name="query" class="form-control" placeholder="Поиск книги" value="{{ query }}">
+            <button class="btn btn-outline-secondary" type="submit">Поиск</button>
+        </div>
+    </form>
+    {% if books %}
+        <ul>
+            {% for book in books %}
+                <li>
+                    <a href="{% url 'films:book_detail' book.id %}">{{ book.name }}</a>
+                    - {{ book.film.name }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Книги не найдены.</p>
+    {% endif %}
+{% endblock %}

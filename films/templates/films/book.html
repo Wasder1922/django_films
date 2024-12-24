@@ -1,0 +1,13 @@
+<div class="card h-100">
+    {% if book.booksCover %}
+      <img src="{{ book.booksCover.url }}" alt="{{ book.name }}" class="card-img-top" />
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{ book.name }}</h5>
+      <!-- Optional: Display additional book details -->
+      <!-- <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.author }}</h6> -->
+    </div>
+    <div class="card-footer">
+      <a href="{% url 'films:book_detail' book.id %}" class="text-decoration-none stretched-link">Подробнее</a>
+    </div>
+  </div>

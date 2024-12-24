@@ -1,0 +1,16 @@
+{% load django_bootstrap5 %}
+
+{% if books %}
+  <div class="row">
+    {% for book in books %}
+      <div class="col-md-3 py-2">
+        {% include "films/book.html" with book=book %}
+      </div>
+    {% endfor %}
+  </div>
+  <div class="my-4">
+    {% bootstrap_pagination books %}
+  </div>
+{% else %}
+  <div class="alert alert-info">Книги не найдены</div>
+{% endif %}

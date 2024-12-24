@@ -1,6 +1,6 @@
 from django import forms
 from dal import autocomplete
-from .models import Country, Genre, Film, Person
+from .models import Country, Genre, Film, Person, Book
 
 
 class CountryForm(forms.ModelForm):
@@ -39,3 +39,11 @@ class PersonForm(forms.ModelForm):
             "birthday": forms.DateInput(attrs={'type': 'date'},
                                         format="%Y-%m-%d")
         }
+
+
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = ['name', 'film', 'author', 'price',
+                  'published_at', 'description', 'length',
+                  'booksCover', 'publisher', 'ISBN']

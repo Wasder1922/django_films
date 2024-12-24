@@ -39,4 +39,11 @@ urlpatterns = [
          views.person_delete, name='person_delete'),
     path('people/autocomplete/',
          views.PersonAutocomplete.as_view(), name='person_autocomplete'),
+    
+    path('films/<int:film_id>/books', views.film_books, name='film_books'),
+    path('films/<int:film_id>/books/create/', views.book_create, name='book_create'),
+    path('films/<int:film_id>/books/<int:book_id>/update/', views.book_update, name="book_update"),
+    path('films/<int:film_id>/books/<int:book_id>/delete/', views.book_delete, name="book_delete"),
+
+    path('books/', views.book_list, name="book_list")
 ]

@@ -1,0 +1,12 @@
+{% extends 'films/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+  <h1>Редактирование книги {{ book.name }}</h1>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {{ form.media }}
+    {% bootstrap_button button_type='submit' content='Сохранить' %}
+  </form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'films/base.html' %}
+
+{% block content %}
+  <h1>Книги для фильма {{ film.name }}</h1>
+  {% if books %}
+    <ul>
+      {% for book in books %}
+        <li>
+          {{ book.name }}
+          <a href="{% url 'films:book_detail' book.id %}">Подробнее</a>
+          {% if user.is_superuser %}
+            | <a href="{% url 'films:book_update' book.id %}">Изменить</a>
+            | <a href="{% url 'films:book_delete' book.id %}">Удалить</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Нет книг для этого фильма.</p>
+  {% endif %}
+{% endblock %}

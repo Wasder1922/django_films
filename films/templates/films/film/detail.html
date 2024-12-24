@@ -28,8 +28,13 @@
           <i class="bi-trash"></i>
           Удалить
         </a>
+        <a href="{% url 'films:film_books' film.id %}" class="btn btn-secondary btn-block">
+          <i class="bi-book"></i>
+          Книги
+        </a>
       </div>
       {% endif %}
+
     </div>
     <div class="col-md-9">
       <div class="card">
@@ -96,6 +101,31 @@
               </dd>
             {% endif %}
           </dl>
+
+          <div class="card mt-4">
+            <div class="card-header">
+              Книги
+            </div>
+            <div class="card-body">
+              {% if film.book_set.exists %}
+                {% for book in film.book_set.all %}
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ book.name }}</h5>
+                      {% if book.booksCover %}
+                        <img src="{{ book.booksCover.url }}" class="img-fluid" alt="{{ book.name }} cover" width="200">
+                      {% endif %}
+                      <p class="card-text">Цена: {{ book.price }}</p>
+                      <a href="{% url 'films:book_detail' book.id %}" class="btn btn-primary">Подробнее</a>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <p>Нет доступных книг для этого фильма.</p>
+              {% endif %}
+            </div>
+          </div>
+
           {% if film.trailer_url %}
             <div class="ratio ratio-16x9">
               <iframe src="{{ film.trailer_url }}" title="YouTube video" allowfullscreen></iframe>

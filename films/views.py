@@ -1,10 +1,11 @@
 from dal import autocomplete
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import user_passes_test
-from .models import Country, Film, Genre, Person
+from .models import Country, Film, Genre, Person, Book
 from .forms import CountryForm, GenreForm, FilmForm, PersonForm
 from .helpers import paginate
 from django.contrib import messages
+from .forms import BookForm
 
 
 def check_admin(user):
@@ -174,6 +175,12 @@ def film_delete(request, id):
                   {'film': film})
 
 
+def film_books(request, film_id):
+    film = get_object_or_404(Film, id=film_id)
+    books = film.book_set.all()
+    return render(request, 'films/film/books.html', {'film': film, 'books': books})
+
+
 def person_list(request):
     people = Person.objects.all()
     query = request.GET.get('query', '')
@@ -228,6 +235,58 @@ def person_delete(request, id):
         return redirect('films:person_list')
     return render(request, 'films/person/delete.html',
                   {'person': person})
+
+
+def book_list(request):
+    books = Book.objects.all()
+    query = request.GET.get('query', '')
+    if query:
+        books = books.filter(name__icontains=query)
+    books = paginate(request, books)
+    return render(request, 'films/book/list.html',
+                  {'books': books, 'query': query})
+
+
+def book_detail(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    return render(request, 'films/book/detail.html', {'book': book})
+
+
+@user_passes_test(check_admin)
+def book_create(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES)
+        if form.is_valid():
+            book = form.save()
+            messages.success(request, 'Книга добавлена')
+            return redirect('films:book_detail', book_id=book.id)
+    else:
+        form = BookForm()
+    return render(request, 'films/book/create.html', {'form': form})
+
+
+@user_passes_test(check_admin)
+def book_update(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES, instance=book)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Книга изменена')
+            return redirect('films:book_detail', book_id=book.id)
+    else:
+        form = BookForm(instance=book)
+    return render(request, 'films/book/update.html', {'form': form})
+
+
+@user_passes_test(check_admin)
+def book_delete(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        book.delete()
+        messages.success(request, 'Книга удалена')
+        return redirect('films:film_books', film_id=book.film.id)
+    return render(request, 'films/book/delete.html', {'book': book})
 
 
 class PersonAutocomplete(autocomplete.Select2QuerySetView):

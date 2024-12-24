@@ -87,7 +87,7 @@ class Film(MyModel):
     cover = models.ImageField(
         "Постер", upload_to='covers/', blank=True, null=True)
     description = models.TextField("Описание", blank=True, null=True)
-    people = models.ManyToManyField(Person, verbose_name="Актеры")
+    people = models.ManyToManyField(Person, verbose_name="Актеры") # film_set в качестве related_name ??? views.py 195
     kinopoisk_id = models.PositiveIntegerField(
         "Kinopoisk ID", blank=True, null=True)
 
@@ -104,7 +104,7 @@ class Book(MyModel):
     name = models.CharField("Название книги", max_length=200)
     author = models.CharField("Автор книги", max_length=200)
     price = models.DecimalField(max_digits=6, decimal_places=2, validators=[MinValueValidator(0)])
-    published_at = models.DateTimeField()
+    published_at = models.DateTimeField() # Валидатор поставить!
     description = models.TextField("Описание книги", blank=True)
     length = models.PositiveIntegerField("Количество страниц", blank=True, null=True)
     booksCover = models.ImageField(
